@@ -28,16 +28,18 @@ for (var i = 4; i < process.argv.length; i++) {
 // Create separate functions to the switch case is cleaner
 switch (userChoice) {
     case "concert-this":
-        // console.log("Concert.");
+        // bands(userQuery);
+        console.log("Concert.");
         break;
     case "spotify-this-song":
         spotify(userQuery);
         break;
     case "movie-this":
-        // console.log("Movie.")
+        // movies(userQuery);
+        console.log("Movie.");
         break;
     case "do-what-it-says":
-        // console.log("Do it.");
+        console.log("Do it.");
         break;
     default:
         console.log("Please enter a valid search term.");
@@ -49,7 +51,7 @@ function spotify(userQuery) {
     var spotify = new Spotify(keys.spotify)
 
     if (!userQuery) {
-        userQuery = "The Sign";
+        userQuery = "The Sign Ace of Base";
     }
 
     spotify.search({type: "track", query: userQuery}, function(err, data) {
@@ -63,12 +65,19 @@ function spotify(userQuery) {
         console.log("Preview Link: " + userSong[0].preview_url);
         console.log("Album: " + userSong[0].album.name);
     });
-}
+};
 
-// MOVIE CALL for function
-// axios.get("http://www.omdbapi.com/?t=" + USERINPUTSTUFF + "&y=&plot=short&apikey=" + MYAPIKEYLINK).then(
-//     function(response) {
-//     console.log(response);
-//     console.log("The movie's rating is: " + response.data.imdbRating);
+// function movies(userQuery) {
+//     var movies = new movies(keys.movies);
+
+//     axios.get("http://www.omdbapi.com/?t=" + userQuery + "&y=&plot=short&apikey=" + movies)
+//     .then(function(response) {
+//         console.log(response);
+//         console.log("The movie's rating is: " + response.data.imdbRating);
 //     }
 // );
+// };
+
+// function bands(userQuery) {
+//     var bands = new bands(keys.bands);
+// }
