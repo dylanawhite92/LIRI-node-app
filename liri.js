@@ -4,10 +4,11 @@ require("dotenv").config();
 
 // Packages
 var fs = require("fs");
-var Spotify = require("node-spotify-api");
 var keys = require("./keys.js")
 var axios = require("axios");
 var moment = require("moment");
+var Spotify = require("node-spotify-api");
+var spotify = new Spotify(keys.spotify)
 // var inquirer = require("inquirer");
 
 // User Input
@@ -28,18 +29,19 @@ for (var i = 4; i < process.argv.length; i++) {
 // Create separate functions to the switch case is cleaner
 switch (userChoice) {
     case "concert-this":
-        // bands(userQuery);
-        console.log("Concert.");
+        concertThis(userQuery);
+        // console.log("Concert.");
         break;
     case "spotify-this-song":
         spotify(userQuery);
         break;
     case "movie-this":
-        // movies(userQuery);
-        console.log("Movie.");
+        movies(userQuery);
+        // console.log("Movie.");
         break;
     case "do-what-it-says":
-        console.log("Do it.");
+        doIt(userQuery);
+        // console.log("Do it.");
         break;
     default:
         console.log("Please enter a valid search term.");
@@ -48,7 +50,6 @@ switch (userChoice) {
 
 // Spotify Function
 function spotify(userQuery) {
-    var spotify = new Spotify(keys.spotify)
 
     if (!userQuery) {
         userQuery = "The Sign Ace of Base";
@@ -67,17 +68,19 @@ function spotify(userQuery) {
     });
 };
 
-// function movies(userQuery) {
-//     var movies = new movies(keys.movies);
+function movies(userQuery) {
+    
+    axios.get("http://www.omdbapi.com/?t=" + userQuery + "&y=&plot=short&apikey=" + keys.movies)
+    .then(function(response) {
+        console.log(response);
+        console.log("The movie's rating is: " + response.data.imdbRating);
+    });
+};
 
-//     axios.get("http://www.omdbapi.com/?t=" + userQuery + "&y=&plot=short&apikey=" + movies)
-//     .then(function(response) {
-//         console.log(response);
-//         console.log("The movie's rating is: " + response.data.imdbRating);
-//     }
-// );
-// };
+function concertThis(userQuery) {
+    
+    axios.get("https:rest.bandsintown.com/artists/" + userQuery + "/events?app_id=" + keys.bands)
+    .then(function(response) {
 
-// function bands(userQuery) {
-//     var bands = new bands(keys.bands);
-// }
+    });
+}
