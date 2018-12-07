@@ -7,6 +7,8 @@ Using `.gitignore`, API keys are stored locally and kept safe through abstractio
 
 All data input by the user to the terminal is logged into `log.txt` using `fs.appendFile` in the `logThis()` function.
 
+![Log Output](screenshots/updating-log-txt.png)
+
 ## Built With/Installations Required
 
 * [Node.js] (https://nodejs.org/en/)
@@ -19,16 +21,35 @@ All data input by the user to the terminal is logged into `log.txt` using `fs.ap
 * [Bandsintown-API] (http://www.artists.bandsintown.com/bandsintown-api)
 * [Node-Spotify-API] (https://www.npmjs.com/package/node-spotify-api)
 
-## Commands
+### Commands
 
 1. `node liri.js concert-this <artist/band-name>`
     * This command searches the Bands in Town Artist Events API through Axios (`"https://rest.bandsintown.com/artists/" + userQuery + "/events?app_id=" + keys.bands.id`) and returns events the artist is appearing at in the near future. It includes `Venue Name: `, `Venue Location: `, and `Date of the Event: `. If no artist is entered, the API automatically searches Slayer for the user.
 
+    ![Default Concert Output](screenshots/default-concert-this.png)
+
+    ![Example Concert Output](screenshots/example-concert-output.png)
+
 2. `node liri.js spotify-this-song <song-name>`
     * This command searches the Spotify Web API that runs on Node.js (`spotify.search({type: "track", query: userQuery}, function(err, data)`) and returns information about the song the user input. It includes `Artist: `, `Song Name: `, and `Preview Link: `, and `Album: `. If no artist is entered, the API automatically searches "The Sign" by Ace of Base for the user.
+
+    ![Default Song Output](screenshots/default-spotify-output.png)
+
+    ![Example Song Output](screenshots/example-song-output.png)
 
 3. `node liri.js movie-this <movie-name>`
     * This command searches the OMDB API through Axios (`"http://www.omdbapi.com/?t=" + userQuery + "&y=&plot=short&apikey=" + keys.movies.id`) and returns information about the movie the user input. It includes `Title: `, `Year Released: `, `IMDB Rating: `, `Rotten Tomatoes Rating: `, `Country/Countries Produced: `, `Language: `, `Plot: `, and `Cast: `. If no movie is entered, the API automatically searches Mr. Nobody for the user, as well as letting them know that they should check it out, notifying the user that it's on Netflix, and providing a link to the IMDB page for the movie.
 
+    ![Default Movie Output](screenshots/default-movie-output.png)
+
+    ![Example Movie Output](screenshots/example-movie-output.png)
+
 4. `node liri.js do-what-it-says`
     * Using the `fs` Node package, LIRI accesses the text in random.txt and uses that to call one of LIRI's commands for the user. It runs `spotify-this-song` for "I Want it That Way" by the Backstreet Boys, but can also be modified to search for a specific movie for movie-this, or a specific artist for concert-this.
+
+    ![Do What It Says Output](screenshots/do-what-it-says.png)
+
+5. `node liri.js`
+    * If no other user input is registered, the terminal returns the message `Please enter a valid search term, such as {concert-this}, {spotify-this-song}, {movie-this}, or {do-what-it-says}"`.
+
+    ![Default Output](screenshots/default-output.png)

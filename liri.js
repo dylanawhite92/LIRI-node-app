@@ -1,7 +1,5 @@
 require("dotenv").config();
 
-// Use inquirer in hw
-
 // Packages
 var fs = require("fs");
 var keys = require("./keys.js")
@@ -9,7 +7,6 @@ var axios = require("axios");
 var moment = require("moment");
 var Spotify = require("node-spotify-api");
 var spotify = new Spotify(keys.spotify)
-// var inquirer = require("inquirer");
 
 // User Input
 var userChoice = process.argv[2];
@@ -24,24 +21,18 @@ for (var i = 4; i < process.argv.length; i++) {
     }
 }
 
-// logThis(userChoice);
-
-// Create separate functions to the switch case is cleaner
 switch (userChoice) {
     case "concert-this":
         concertThis();
-        // logThis("Concert.");
         break;
     case "spotify-this-song":
         spotifyThis();
         break;
     case "movie-this":
         movies();
-        // logThis("Movie.");
         break;
     case "do-what-it-says":
         doThis();
-        // logThis("Do it.");
         break;
     default:
         logThis("Please enter a valid search term, such as {concert-this},");
@@ -50,7 +41,7 @@ switch (userChoice) {
 }
 
 // Spotify Function
-function spotifyThis(userQuery) {
+function spotifyThis() {
 
     // Catch empty input
     if (!userQuery) {
@@ -70,7 +61,7 @@ function spotifyThis(userQuery) {
     });
 };
 
-function movies(userQuery) {
+function movies() {
 
     if (!userQuery) {
         userQuery = "Mr. Nobody";
@@ -92,12 +83,11 @@ function movies(userQuery) {
     });
 };
 
-function concertThis(userQuery) {
+function concertThis() {
 
     if (!userQuery) {
         userQuery = "Slayer";
     }
-    
     axios.get("https://rest.bandsintown.com/artists/" + userQuery + "/events?app_id=" + keys.bands.id)
     .then(function(response) {
         for (var i = 0; i < response.data.length; i++) {
@@ -117,8 +107,9 @@ function doThis () {
         }
 
         var readArray = data.split(",");
-        // logThis(readArray);
+
         userQuery = readArray[1];
+
         spotifyThis(userQuery);
     })
 };
