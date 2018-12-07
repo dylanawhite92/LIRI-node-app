@@ -29,18 +29,18 @@ for (var i = 4; i < process.argv.length; i++) {
 // Create separate functions to the switch case is cleaner
 switch (userChoice) {
     case "concert-this":
-        concertThis(userQuery);
+        concertThis();
         // console.log("Concert.");
         break;
     case "spotify-this-song":
-        spotify(userQuery);
+        spotifyThis();
         break;
     case "movie-this":
-        movies(userQuery);
+        movies();
         // console.log("Movie.");
         break;
     case "do-what-it-says":
-        doIt(userQuery);
+        doThis();
         // console.log("Do it.");
         break;
     default:
@@ -50,7 +50,7 @@ switch (userChoice) {
 }
 
 // Spotify Function
-function spotify(userQuery) {
+function spotifyThis(userQuery) {
 
     // Catch empty input
     if (!userQuery) {
@@ -78,9 +78,9 @@ function movies(userQuery) {
         console.log("It's on Netflix!");
     }
     
-    axios.get("http://www.omdbapi.com/?t=" + userQuery + "&y=&plot=short&apikey=trilogy")
+    axios.get("http://www.omdbapi.com/?t=" + userQuery + "&y=&plot=short&apikey=" + keys.movies.id)
     .then(function(response) {
-        
+
         console.log("Title: " + response.data.Title);
         console.log("Year Released: " + response.data.Year);
         console.log("IMDB rating: " + response.data.imdbRating);
@@ -98,10 +98,27 @@ function concertThis(userQuery) {
         userQuery = "Slayer";
     }
     
-    axios.get("https:rest.bandsintown.com/artists/" + userQuery + "/events?app_id=" + keys.bands)
+    axios.get("https://rest.bandsintown.com/artists/" + userQuery + "/events?app_id=" + keys.bands.id)
     .then(function(response) {
-        console.log("Venue Name: ");
-        console.log("Venue Location: ");
-        console.log("Date of the Event: ");
+        for (var i = 0; i < response.data.length; i++) {
+
+            console.log("Venue Name: "+ response.data[i].venue.name);
+            console.log("Venue Location: " + response.data[i].venue.city + ", " + response.data[i].venue.country);
+            console.log("Date of the Event: " + moment(response.data[i].datetime).format("L"));
+        }
     });
 }
+
+function doThis() {
+    fs.readFile("random.txt", "utf8", function(err, data) {
+
+        if (err) {
+            console.log(err);
+        }
+
+        var readArray = data.split(",");
+        // console.log(readArray);
+        userQuery = readArray[1];
+        spotifyThis(userQuery);
+    })
+};
