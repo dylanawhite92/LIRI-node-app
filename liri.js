@@ -24,28 +24,28 @@ for (var i = 4; i < process.argv.length; i++) {
     }
 }
 
-// console.log(userChoice);
+// logThis(userChoice);
 
 // Create separate functions to the switch case is cleaner
 switch (userChoice) {
     case "concert-this":
         concertThis();
-        // console.log("Concert.");
+        // logThis("Concert.");
         break;
     case "spotify-this-song":
         spotifyThis();
         break;
     case "movie-this":
         movies();
-        // console.log("Movie.");
+        // logThis("Movie.");
         break;
     case "do-what-it-says":
         doThis();
-        // console.log("Do it.");
+        // logThis("Do it.");
         break;
     default:
-        console.log("Please enter a valid search term, such as {concert-this},");
-        console.log("{spotify-this-song}, {movie-this}, or {do-what-it-says}");
+        logThis("Please enter a valid search term, such as {concert-this},");
+        logThis("{spotify-this-song}, {movie-this}, or {do-what-it-says}");
         break;
 }
 
@@ -59,14 +59,14 @@ function spotifyThis(userQuery) {
 
     spotify.search({type: "track", query: userQuery}, function(err, data) {
         if (err) {
-            console.log(err);
+            logThis(err);
         }
 
         var userSong = data.tracks.items;
-        console.log("Artist: " + userSong[0].artists[0].name);
-        console.log("Song Name: " + userSong[0].name);
-        console.log("Preview Link: " + userSong[0].preview_url);
-        console.log("Album: " + userSong[0].album.name);
+        logThis("Artist: " + userSong[0].artists[0].name);
+        logThis("Song Name: " + userSong[0].name);
+        logThis("Preview Link: " + userSong[0].preview_url);
+        logThis("Album: " + userSong[0].album.name);
     });
 };
 
@@ -74,21 +74,21 @@ function movies(userQuery) {
 
     if (!userQuery) {
         userQuery = "Mr. Nobody";
-        console.log("If you haven't watched 'Mr. Nobody,' then you should: <http://www.imdb.com/title/tt0485947/>");
-        console.log("It's on Netflix!");
+        logThis("If you haven't watched 'Mr. Nobody,' then you should: <http://www.imdb.com/title/tt0485947/>");
+        logThis("It's on Netflix!");
     }
     
     axios.get("http://www.omdbapi.com/?t=" + userQuery + "&y=&plot=short&apikey=" + keys.movies.id)
     .then(function(response) {
 
-        console.log("Title: " + response.data.Title);
-        console.log("Year Released: " + response.data.Year);
-        console.log("IMDB rating: " + response.data.imdbRating);
-        console.log("Rotten Tomatoes Rating: " + response.data.Ratings[1].Value);
-        console.log("Country/Countries Produced: " + response.data.Country);
-        console.log("Language: " + response.data.Language);
-        console.log("Plot: " + response.data.Plot);
-        console.log("Cast: " + response.data.Actors);
+        logThis("Title: " + response.data.Title);
+        logThis("Year Released: " + response.data.Year);
+        logThis("IMDB rating: " + response.data.imdbRating);
+        logThis("Rotten Tomatoes Rating: " + response.data.Ratings[1].Value);
+        logThis("Country/Countries Produced: " + response.data.Country);
+        logThis("Language: " + response.data.Language);
+        logThis("Plot: " + response.data.Plot);
+        logThis("Cast: " + response.data.Actors);
     });
 };
 
@@ -102,23 +102,34 @@ function concertThis(userQuery) {
     .then(function(response) {
         for (var i = 0; i < response.data.length; i++) {
 
-            console.log("Venue Name: "+ response.data[i].venue.name);
-            console.log("Venue Location: " + response.data[i].venue.city + ", " + response.data[i].venue.country);
-            console.log("Date of the Event: " + moment(response.data[i].datetime).format("L"));
+            logThis("Venue Name: "+ response.data[i].venue.name);
+            logThis("Venue Location: " + response.data[i].venue.city + ", " + response.data[i].venue.country);
+            logThis("Date of the Event: " + moment(response.data[i].datetime).format("L"));
         }
     });
 }
 
-function doThis() {
+function doThis () {
     fs.readFile("random.txt", "utf8", function(err, data) {
 
         if (err) {
-            console.log(err);
+            logThis(err);
         }
 
         var readArray = data.split(",");
-        // console.log(readArray);
+        // logThis(readArray);
         userQuery = readArray[1];
         spotifyThis(userQuery);
     })
+};
+
+function logThis (logQuery) {
+
+    console.log(logQuery);
+
+    fs.appendFile("log.txt", logQuery, function(err) {
+        if (err) {
+            return logThis("Error: " + err);
+        }
+    });
 };
